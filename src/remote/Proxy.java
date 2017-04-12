@@ -15,8 +15,8 @@ import java.rmi.Remote;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * The {@link Proxy} class describes an object that can be serialized and sent to a remote who can then invoke the
- * methods of the proxied object.
+ * The {@link Proxy} class describes an object that can be serialized and sent
+ * to a remote who can then invoke the methods of the proxied object.
  *
  * @param <T> The type of object to proxy.
  */
@@ -42,7 +42,8 @@ public abstract class Proxy<T extends Serializable & Remote> implements Closeabl
     // Generate a dynamic runtime stub whose methods can be invoked remotely.
     T stub = (T) UnicastRemoteObject.exportObject(this, 0);
 
-    // Construct a channel that will do nothing but write the generated stub to the remote.
+    // Construct a channel that will do nothing but write the generated stub to
+    // the remote.
     this.channel = new Channel(host, c -> c.write(stub));
   }
 
@@ -50,7 +51,8 @@ public abstract class Proxy<T extends Serializable & Remote> implements Closeabl
    * Close the {@link Proxy} and its associated {@link Channel}.
    *
    * <p>
-   * This method is idempotent and calling it more than once will therefore have no effect.
+   * This method is idempotent and calling it more than once will therefore have
+   * no effect.
    *
    * @throws IOException In case of an I/O error.
    */

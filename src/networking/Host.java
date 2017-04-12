@@ -4,7 +4,8 @@ package networking;
 import java.io.Serializable;
 
 /**
- * The immutable {@link Host} class describes a combination of an {@link Address} and {@link Port} tuple.
+ * The immutable {@link Host} class describes a combination of an {@link Address}
+ * and {@link Port} tuple.
  */
 public final class Host implements Serializable {
   /**
@@ -42,7 +43,8 @@ public final class Host implements Serializable {
   }
 
   /**
-   * Initialize a new {@link Host} with the specified {@link Address} and {@link Port}.
+   * Initialize a new {@link Host} with the specified {@link Address} and
+   * {@link Port}.
    *
    * @param address The {@link Address} of the {@link Host}.
    * @param port    The {@link Port} of the {@link Host}.

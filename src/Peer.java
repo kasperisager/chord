@@ -65,7 +65,8 @@ public interface Peer extends Serializable, Remote {
    *
    * @param key The {@link Key} of the object to retrieve.
    * @param <T> The type of the object to retrieve.
-   * @return    The object with the specified {@link Key} if found, otherwise null.
+   * @return    The object with the specified {@link Key} if found, otherwise
+   *            null.
    */
   <T extends Serializable> T get(final Key key) throws RemoteException;
 
@@ -74,8 +75,10 @@ public interface Peer extends Serializable, Remote {
    *
    * @param key    The {@link Key} of the object to store.
    * @param object The object to store.
-   * @param <T>    The type of the object already associated with the {@link Key} if any.
-   * @return       The object previously associated with the {@link Key} if any, otherwise null.
+   * @param <T>    The type of the object already associated with the {@link Key}
+   *               if any.
+   * @return       The object previously associated with the {@link Key} if any,
+   *               otherwise null.
    */
   <T extends Serializable> T put(final Key key, final Serializable object) throws RemoteException;
 

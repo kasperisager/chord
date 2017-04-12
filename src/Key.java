@@ -30,11 +30,13 @@ public final class Key implements Serializable {
   }
 
   /**
-   * Check if a {@link Key} lies between a lower (exclusive) and upper (inclusive) {@link Key}.
+   * Check if a {@link Key} lies between a lower (exclusive) and upper (inclusive)
+   * {@link Key}.
    *
-   * @param lower  The lower bound.
-   * @param upper  The upper bound.
-   * @return       A boolean indicating whether or not the number lies between the lower and upper bound.
+   * @param lower The lower bound.
+   * @param upper The upper bound.
+   * @return      A boolean indicating whether or not the number lies between
+   *              the lower and upper bound.
    */
   public boolean isBetween(final Key lower, final Key upper) {
     if (lower.key < upper.key) {

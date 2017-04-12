@@ -5,7 +5,8 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * The {@link Servable} describes a resource that can be served asynchronously and closed later on.
+ * The {@link Servable} describes a resource that can be served asynchronously
+ * and closed later on.
  */
 public interface Servable extends Closeable {
   /**

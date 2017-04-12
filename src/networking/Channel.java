@@ -20,7 +20,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * The {@link Channel} class describes an asynchronous TCP abstraction for working with TCP streams in a simpler manner.
+ * The {@link Channel} class describes an asynchronous TCP abstraction for
+ * working with TCP streams in a simpler manner.
  */
 public final class Channel implements Loggable, Closeable {
   /**
@@ -36,8 +37,9 @@ public final class Channel implements Loggable, Closeable {
   }
 
   /**
-   * Initialize a new inbound and outbound {@link Channel} bound to the specified {@link Host} and with the specified
-   * {@link Handler} for incoming {@link Connection Connections}.
+   * Initialize a new inbound and outbound {@link Channel} bound to the
+   * specified {@link Host} and with the specified {@link Handler} for incoming
+   * {@link Connection Connections}.
    *
    * @param host    The {@link Host} to bind the {@link Channel} to.
    * @param handler The {@link Handler} for incoming {@link Connection Connections}.
@@ -76,7 +78,8 @@ public final class Channel implements Loggable, Closeable {
    * Close the {@link Channel}, rejecting all future attempts to connect to it.
    *
    * <p>
-   * This method is idempotent and calling it more than once will therefore have no effect.
+   * This method is idempotent and calling it more than once will therefore have
+   * no effect.
    *
    * @throws IOException In case of an I/O error.
    */
@@ -89,8 +92,8 @@ public final class Channel implements Loggable, Closeable {
   }
 
   /**
-   * Establish a {@link Connection} from the current {@link Channel} to a {@link Channel} bound to the specified
-   * {@link Host} using the specified {@link Handler}.
+   * Establish a {@link Connection} from the current {@link Channel} to a {@link Channel}
+   * bound to the specified {@link Host} using the specified {@link Handler}.
    *
    * @param host
    * @param handler
@@ -116,8 +119,9 @@ public final class Channel implements Loggable, Closeable {
   }
 
   /**
-   * Establsih a {@link Connection} from the current {@link Channel} to a {@link Channel} bound to the specified
-   * {@link Host}, blocking until the {@link Connection} has been established and then returning it.
+   * Establsih a {@link Connection} from the current {@link Channel} to a
+   * {@link Channel} bound to the specified {@link Host}, blocking until the
+   * {@link Connection} has been established and then returning it.
    *
    * @param host The {@link Host} to connect to.
    * @return     The {@link Connection} to the {@link Host}.
@@ -129,7 +133,8 @@ public final class Channel implements Loggable, Closeable {
       throw new IllegalArgumentException("A host must be specified");
     }
 
-    // Construct a future which can be completed once the connection to the host has been established.
+    // Construct a future which can be completed once the connection to the host
+    // has been established.
     CompletableFuture<Connection> future = new CompletableFuture<>();
 
     // Connect to the host and pass the connection to the future once connected.
@@ -144,8 +149,9 @@ public final class Channel implements Loggable, Closeable {
   }
 
   /**
-   * The {@link Handler} interface describes a {@link Connection} handler that defines the actions to be taken once a
-   * {@link Connection} has been established between two {@link Host Hosts}.
+   * The {@link Handler} interface describes a {@link Connection} handler that
+   * defines the actions to be taken once a {@link Connection} has been
+   * established between two {@link Host Hosts}.
    */
   @FunctionalInterface
   public interface Handler {
@@ -163,7 +169,8 @@ public final class Channel implements Loggable, Closeable {
     private final Handler handler;
 
     /**
-     * Initialize a new {@link Server} on the specified {@link ServerSocket} with the given {@link Handler}.
+     * Initialize a new {@link Server} on the specified {@link ServerSocket}
+     * with the given {@link Handler}.
      *
      * @param socket
      * @param handler
@@ -183,14 +190,17 @@ public final class Channel implements Loggable, Closeable {
         Client client = null;
 
         try {
-          // Accept an incoming connection and construct a new client worker for handling it.
+          // Accept an incoming connection and construct a new client worker for
+          // handling it.
           client = new Client(socket.accept(), this.handler);
           client.start();
         } catch (IOException ex1) {
           this.log().severe(ex1.toString());
 
           try {
-            client.close();
+            if (client != null) {
+              client.close();
+            }
           } catch (IOException ex2) {
             this.log().severe(ex2.toString());
           }
@@ -203,7 +213,8 @@ public final class Channel implements Loggable, Closeable {
     private final Handler handler;
 
     /**
-     * Initialize a new {@link Client} on the specified {@link Socket} with the given {@link Handler}.
+     * Initialize a new {@link Client} on the specified {@link Socket} with the
+     * given {@link Handler}.
      *
      * @param socket
      * @param handler

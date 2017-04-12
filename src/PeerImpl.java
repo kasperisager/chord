@@ -33,7 +33,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * The {@link PeerImpl} class is the implementation of a {@link Peer} in a peer-to-peer network.
+ * The {@link PeerImpl} class is the implementation of a {@link Peer} in a
+ * peer-to-peer network.
  *
  * @see <a href="https://pdos.csail.mit.edu/papers/ton:chord/paper-ton.pdf">https://pdos.csail.mit.edu/papers/ton:chord/paper-ton.pdf</a>
  * @see <a href="https://gist.github.com/thomaslee/b4b150d333ba45df3bdf">https://gist.github.com/thomaslee/b4b150d333ba45df3bdf</a>
@@ -70,7 +71,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
   private final Map<Key, Serializable> data = new HashMap<>();
 
   /**
-   * Array of finger {@link PeerImpl Peers} that act as logarithmic short cuts around the Chord ring.
+   * Array of finger {@link PeerImpl Peers} that act as logarithmic short cuts
+   * around the Chord ring.
    */
   private final Peer[] fingers = new Peer[Key.SIZE];
 
@@ -103,8 +105,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
   }
 
   /**
-   * Initialize a new {@link PeerImpl Peer} bound to specified {@link Host} which will join the {@link PeerImpl Peer}
-   * at the given {@link Host}.
+   * Initialize a new {@link PeerImpl Peer} bound to specified {@link Host}
+   * which will join the {@link PeerImpl Peer} at the given {@link Host}.
    *
    * @param host The {@link Host} that the {@link PeerImpl Peer} binds to.
    * @param peer A known {@link PeerImpl Peer} to join.
@@ -120,8 +122,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
   }
 
   /**
-   * Initialize a new {@link PeerImpl Peer} bound to specified {@link Host} which will join the given
-   * {@link PeerImpl Peer} at the specified {@link Host}.
+   * Initialize a new {@link PeerImpl Peer} bound to specified {@link Host}
+   * which will join the given {@link PeerImpl Peer} at the specified {@link Host}.
    *
    * @param host The {@link Host} that the {@link PeerImpl Peer} binds to.
    * @param peer The {@link Host} of a known {@link PeerImpl Peer} to join.
@@ -234,9 +236,11 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
   }
 
   /**
-   * Notify the current {@link PeerImpl Peer} about the existence of the specified {@link Peer}.
+   * Notify the current {@link PeerImpl Peer} about the existence of the
+   * specified {@link Peer}.
    *
-   * @param peer The {@link Peer} to notify the current {@link PeerImpl Peer} about.
+   * @param peer The {@link Peer} to notify the current {@link PeerImpl Peer}
+   *             about.
    */
   public void notify(final Peer peer) throws RemoteException {
     if (peer == null) {
@@ -249,13 +253,14 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
     if (predecessor == null) {
       this.predecessor(peer);
     }
-    // Bail out if the current peer notified itself of its existence, which can happen when only a single peer exists
-    // in the network.
+    // Bail out if the current peer notified itself of its existence, which can
+    // happen when only a single peer exists in the network.
     else if (peer == this) {
       return;
     }
-    // If the current peer doesn't have a predecessor or if the new peer is better suited than the current predecessor,
-    // then use the new peer as the predecessor instead.
+    // If the current peer doesn't have a predecessor or if the new peer is
+    // better suited than the current predecessor, then use the new peer as the
+    // predecessor instead.
     else if (peer.key().isBetween(predecessor.key(), this.key)) {
       this.predecessor(peer);
     }
@@ -266,7 +271,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
    *
    * @param key The {@link Key} of the object to retrieve.
    * @param <T> The type of the object to retrieve.
-   * @return    The object with the specified {@link Key} if found, otherwise null.
+   * @return    The object with the specified {@link Key} if found, otherwise
+   *            null.
    */
   @SuppressWarnings("unchecked")
   public <T extends Serializable> T get(final Key key) throws RemoteException {
@@ -290,8 +296,10 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
    *
    * @param key    The {@link Key} of the object to store.
    * @param object The object to store.
-   * @param <T>    The type of the object already associated with the {@link Key} if any.
-   * @return       The object previously associated with the {@link Key} if any, otherwise null.
+   * @param <T>    The type of the object already associated with the {@link Key}
+   *               if any.
+   * @return       The object previously associated with the {@link Key} if any,
+   *               otherwise null.
    */
   @SuppressWarnings("unchecked")
   public <T extends Serializable> T put(final Key key, final Serializable object) throws RemoteException {
@@ -342,8 +350,9 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
           continue;
         }
 
-        // If the key of the finger lies between that of the current key and the given key, then the finger is a
-        // possible candidate for being closest to the key.
+        // If the key of the finger lies between that of the current key and the
+        // given key, then the finger is a possible candidate for being closest
+        // to the key.
         if (peer.key().isBetween(this.key, key)) {
           candidate = peer;
         }
@@ -374,13 +383,15 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
     Peer successor = this.successor();
     Peer candidate = successor.predecessor();
 
-    // Is the successor of the current peer has a predecessor (candidate) than lies between the current peer and its
-    // successor, then the candidate can be used as the successor of the current peer instead.
+    // Is the successor of the current peer has a predecessor (candidate) than
+    // lies between the current peer and its successor, then the candidate can
+    // be used as the successor of the current peer instead.
     if (candidate != null && candidate.key().isBetween(this.key, successor.key())) {
       this.successor(candidate);
     }
 
-    // Notify the successor of the current peer (possible the new candidate) about its existence.
+    // Notify the successor of the current peer (possible the new candidate)
+    // about its existence.
     this.successor().notify(this);
 
     // Fix the finger table of the peer.
@@ -398,19 +409,23 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
    */
   private void fixFingers() throws RemoteException {
     synchronized (this.fingers) {
-      // Go through each of the fingers in the finger table, treating their indices as bits of the peer keys. The
-      // immediate successor isn't touched so the loop skips the first bit.
+      // Go through each of the fingers in the finger table, treating their
+      // indices as bits of the peer keys. The immediate successor isn't touched
+      // so the loop skips the first bit.
       for (byte bits = 1; bits < this.fingers.length; bits++) {
-        // Set the finger as the successor of the peer key shifted the given number of bits. As an example, key "0"
-        // shifted 0 bits is "1", 1 bit is "2", 2 bits is "4", 3 bits is "8", and so forth. This ensures that the
-        // fingers are placed with logarithmic distances around the chord ring.
+        // Set the finger as the successor of the peer key shifted the given
+        // number of bits. As an example, key "0" shifted 0 bits is "1", 1 bit
+        // is "2", 2 bits is "4", 3 bits is "8", and so forth. This ensures that
+        // the fingers are placed with logarithmic distances around the chord
+        // ring.
         this.fingers[bits] = this.findSuccessor(this.key.shift(bits));
       }
     }
   }
 
   /**
-   * Hand off {@link Key Keys} and objects that the current peer is no longer responsible for.
+   * Hand off {@link Key Keys} and objects that the current peer is no longer
+   * responsible for.
    */
   private void handoff() throws RemoteException {
     synchronized (this.data) {
@@ -418,7 +433,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
         // Find the peer responsible for the data key.
         Peer responsible = this.findSuccessor(key);
 
-        // If the current peer is no longer responsible for the key, then offer it to the responsible peer.
+        // If the current peer is no longer responsible for the key, then offer
+        // it to the responsible peer.
         if (!this.key().equals(responsible.key())) {
           responsible.offer(key, this.data.remove(key));
         }
@@ -432,7 +448,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
   private void reconsileSuccessors() throws RemoteException {
     Peer successor = this.successor();
 
-    // If the peer is its own successor then there's no point in reconciling the list.
+    // If the peer is its own successor then there's no point in reconciling the
+    // list.
     if (successor == this) {
       return;
     }
@@ -455,7 +472,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
    * Check if the specified {@link Peer} is still alive.
    *
    * @param peer The {@link Peer} to check.
-   * @return     A boolean inidicating whether or not the {@link Peer} is still alive.
+   * @return     A boolean inidicating whether or not the {@link Peer} is still
+   *             alive.
    */
   private static boolean isAlive(final Peer peer) {
     if (peer == null) {
@@ -463,8 +481,9 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
     }
 
     try {
-      // Construct a future task for attempting to contact the peer. Since RMI seemingly allows no control over
-      // timeouts, this rather hacky solution is used instead.
+      // Construct a future task for attempting to contact the peer. Since RMI
+      // seemingly allows no control over timeouts, this rather hacky solution
+      // is used instead.
       FutureTask<Key> future = new FutureTask<>(() -> {
         // Invoke a remote method on the peer to check if it responds.
         return peer.key();
@@ -473,7 +492,8 @@ public final class PeerImpl extends Proxy<Peer> implements Peer {
       // Run the future in a thread of its own.
       new Thread(future).start();
 
-      // Wait for some time before declaring the peer dead. Upon timeout, an exception will be thrown.
+      // Wait for some time before declaring the peer dead. Upon timeout, an
+      // exception will be thrown.
       future.get(PEER_TIMEOUT, TimeUnit.MILLISECONDS);
 
       // If it responded, then it's still alive.

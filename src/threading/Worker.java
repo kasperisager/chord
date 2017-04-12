@@ -47,7 +47,8 @@ public abstract class Worker<T extends Closeable> implements Loggable, Closeable
    * Start the {@link Worker}.
    *
    * <p>
-   * This method is idempotent and calling it more than once will therefore have no effect.
+   * This method is idempotent and calling it more than once will therefore have
+   * no effect.
    */
   public final synchronized void start() {
     if (this.isClosed() || this.isStarted()) {
@@ -62,7 +63,8 @@ public abstract class Worker<T extends Closeable> implements Loggable, Closeable
    * Close the {@link Worker} and its associated closeable and working thread.
    *
    * <p>
-   * This method is idempotent and calling it more than once will therefore have no effect.
+   * This method is idempotent and calling it more than once will therefore have
+   * no effect.
    *
    * @throws IOException In case of an I/O error.
    */
@@ -80,18 +82,22 @@ public abstract class Worker<T extends Closeable> implements Loggable, Closeable
     } catch (InterruptedException ex) {
       this.log().severe(ex.getMessage());
 
-      // Re-throw the checked exception as an unchecked runtime exception. This is an extremely rare edge-case either
-      // way, so its preferred to handle it as such.
+      // Re-throw the checked exception as an unchecked runtime exception. This
+      // is an extremely rare edge-case either way, so its preferred to handle
+      // it as such.
       throw new RuntimeException(ex);
     }
   }
 
+  /**
+   * Run the {@link Worker} and its associated closeable.
+   */
   public final void run() {
     try {
       this.run(this.closeable);
     } catch (IOException ex) {
-      // Log the error and return. The method is run in a separate thread, and we don't attempt to propagate the error
-      // to the calling thread.
+      // Log the error and return. The method is run in a separate thread, and
+      // we don't attempt to propagate the error to the calling thread.
       this.log().severe(ex.toString());
     }
   }

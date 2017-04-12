@@ -20,7 +20,8 @@ public final class Address implements Serializable {
   /**
    * Initialize a new {@link Address}.
    *
-   * @param address The string representation of the {@link Address}. Can be both a DNS name as well as an IP address.
+   * @param address The string representation of the {@link Address}. Can be
+   *                both a DNS name as well as an IP address.
    */
   public Address(final String address) {
     if (address == null || address.isEmpty()) {

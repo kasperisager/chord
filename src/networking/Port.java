@@ -59,7 +59,8 @@ public final class Port implements Loggable, Serializable {
   }
 
   /**
-   * Intialize a new {@link Port} given a {@link String} representation of an integer.
+   * Intialize a new {@link Port} given a {@link String} representation of an
+   * integer.
    *
    * @param string The {@link String} representation of an integer.
    */

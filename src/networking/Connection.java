@@ -16,8 +16,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * The {@link Connection} class describes a connection on a channel between two processes where each process can read
- * and write objects over the connection.
+ * The {@link Connection} class describes a connection on a channel between two
+ * processes where each process can read and write objects over the connection.
  */
 public final class Connection implements Loggable, Closeable {
   /**
@@ -77,14 +77,16 @@ public final class Connection implements Loggable, Closeable {
     this.channel = channel;
     this.socket = socket;
 
-    // Construct a buffered object output stream from the output stream of the socket and flush the stream. This ensures
-    // that the stream header is written to the stream immediately, allowing the construction of the input stream on the
-    // other end.
+    // Construct a buffered object output stream from the output stream of the
+    // socket and flush the stream. This ensures that the stream header is
+    // written to the stream immediately, allowing the construction of the input
+    // stream on the other end.
     this.out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
     this.out.flush();
 
-    // Construct a buffered object input stream from the input stream of the socket. The opposite end will by now have
-    // written a stream header to the stream, which can then be read by this end of the connection.
+    // Construct a buffered object input stream from the input stream of the
+    // socket. The opposite end will by now have written a stream header to the
+    // stream, which can then be read by this end of the connection.
     this.in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 
     // Extract the local and remote addresses from the socket and store them.
@@ -138,7 +140,8 @@ public final class Connection implements Loggable, Closeable {
    * Close the {@link Connection} between the processes.
    *
    * <p>
-   * This method is idempotent and calling it more than once will therefore have no effect.
+   * This method is idempotent and calling it more than once will therefore have
+   * no effect.
    *
    * @throws IOException In case of an I/O error.
    */
@@ -153,7 +156,8 @@ public final class Connection implements Loggable, Closeable {
   /**
    * Read a {@link Serializable} object from the remote end of the {@link Connection}.
    *
-   * @return The {@link Serializable} object read from the remote end of the {@link Connection}.
+   * @return The {@link Serializable} object read from the remote end of the
+   *         {@link Connection}.
    */
   @SuppressWarnings("unchecked")
   public synchronized <T extends Serializable> T read() throws IOException {

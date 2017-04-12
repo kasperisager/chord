@@ -22,6 +22,7 @@ public final class Schedule {
     }
 
     Timer timer = new Timer();
+
     timer.schedule(new TimerTask() {
       public void run() {
         try {

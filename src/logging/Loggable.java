@@ -4,7 +4,8 @@ package logging;
 import java.util.logging.Logger;
 
 /**
- * The {@link Loggable} interface describes an entity that can write messages to a class-wide logger.
+ * The {@link Loggable} interface describes an entity that can write messages to
+ * a class-wide logger.
  */
 public interface Loggable {
   /**
